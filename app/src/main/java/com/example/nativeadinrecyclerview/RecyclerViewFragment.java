@@ -1,17 +1,32 @@
 package com.example.nativeadinrecyclerview;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +37,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapter.ClickListen {
 
+    String serverFilePath = "";
+    String localPath = "";
+    String filename = "";
+    String fileUrl = "";
+    String folder_name = "";
+    private ProgressDialog progress;
     // List of Native ads and MenuItems that populate the RecyclerView.
     private List<Object> mRecyclerViewItems;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -63,11 +84,15 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
     }
 
     @Override
-    public void noticeClick(int pos,String url) {
+    public void noticeClick(int pos,String url,String folder_name,String file_name) {
 
         if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,STORAGE_PERMISSION_CODE)){
             if(isOnline()) {
                 Toast.makeText(this.getContext(), "Clicked at " + url, Toast.LENGTH_LONG).show();
+                this.serverFilePath = url;
+                this.filename = file_name;
+                this.folder_name = folder_name;
+                StartOperation();
             }else{
                 Toast.makeText(this.getContext(), "Please Connect to internet !" + url, Toast.LENGTH_LONG).show();
             }
@@ -89,6 +114,159 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
 
         return  connected;
     }
+
+    public void StartOperation(){
+        progress=new ProgressDialog(getContext());
+        progress.setMessage("Loading Content ...!\nOnly for once ... !\nPlease wait ...!");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.setCanceledOnTouchOutside(false);
+        progress.show();
+        try {
+            localPath = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/.gamesfolder/";
+            File root = new File(localPath);
+            localPath = root.getAbsolutePath();
+            Log.d("FOLDER PATH",localPath);
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File f = new File(localPath + filename);
+            if (!f.exists()) {
+                f.createNewFile();
+                FileOutputStream out = new FileOutputStream(f);
+                out.flush();
+                out.close();
+                Thread t = new Thread(new Runnable() {
+
+                    public void run() {
+                        downloadZipFile(serverFilePath,localPath+filename);
+                    }
+                });
+                t.start();
+            }else{
+                File file = new File(localPath + folder_name);
+
+                if(!file.exists()) {
+                    unpackZip(localPath + filename);
+                }else {
+                    progress.dismiss();
+                    sendView();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    void sendView(){
+        File file = new File(localPath + folder_name);
+        fileUrl = file.getAbsolutePath() + "/index.html";
+        if(file.exists()) {
+            Intent intent = new Intent(getContext(), GameViewController.class);
+            intent.putExtra("fileUrl", fileUrl);
+            startActivity(intent);
+        }else{
+            Toast.makeText(getContext(),"Something Went Wrong !!!",Toast.LENGTH_LONG).show();
+            file.delete();
+            File f = new File(localPath + filename);
+            f.delete();
+            StartOperation();
+        }
+    }
+    public void downloadZipFile(String urlStr, String destinationFilePath) {
+        InputStream input = null;
+        OutputStream output = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(urlStr);
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                Log.d("downloadZipFile", "Server ResponseCode=" + connection.getResponseCode() + " ResponseMessage=" + connection.getResponseMessage());
+            }
+
+            // download the file
+            input = connection.getInputStream();
+
+            Log.d("downloadZipFile", "destinationFilePath=" + destinationFilePath);
+            new File(destinationFilePath).createNewFile();
+            output = new FileOutputStream(destinationFilePath);
+
+            byte data[] = new byte[4096];
+            int count;
+            while ((count = input.read(data)) != -1) {
+                output.write(data, 0, count);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            try {
+                if (output != null) output.close();
+                if (input != null) input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (connection != null) connection.disconnect();
+        }
+
+        File f = new File(destinationFilePath);
+
+        Log.d("downloadZipFile", "f.getParentFile().getPath()=" + f.getParentFile().getPath());
+        Log.d("downloadZipFile", "f.getName()=" + f.getName().replace(".zip", ""));
+        unpackZip(destinationFilePath);
+    }
+
+    public void unpackZip(String filePath) {
+        InputStream is;
+        ZipInputStream zis;
+        try {
+
+            File zipfile = new File(filePath);
+            String parentFolder = zipfile.getParentFile().getPath();
+            String filename;
+
+            is = new FileInputStream(filePath);
+            zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry ze;
+            byte[] buffer = new byte[1024];
+            int count;
+
+            while ((ze = zis.getNextEntry()) != null) {
+                filename = ze.getName();
+
+                if (ze.isDirectory()) {
+                    File fmd = new File(parentFolder + "/" + filename);
+                    fmd.mkdirs();
+                    continue;
+                }
+
+                FileOutputStream fout = new FileOutputStream(parentFolder + "/" + filename);
+
+                while ((count = zis.read(buffer)) != -1) {
+                    fout.write(buffer, 0, count);
+                }
+
+                fout.close();
+                zis.closeEntry();
+            }
+
+            zis.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+            progress.dismiss();
+
+        }
+        progress.dismiss();
+        sendView();
+    }
+
 
     // Function to check and request permission.
     public boolean checkPermission(String permission, int requestCode)
@@ -112,9 +290,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
         return true;
     }
 
-    // This function is called when the user accepts or decline the permission.
-    // Request Code is used to check which permission called this function.
-    // This request code is provided when the user is prompt for permission.
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

@@ -1,10 +1,12 @@
 package com.example.nativeadinrecyclerview;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import java.io.File;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -29,7 +33,7 @@ public class GameViewController extends Activity {
     private Button back,winCoins;
     private InterstitialAd interstitial;
     private RewardedAd rewardedVideoAd;
-
+    private WebView webView;
     private Integer coinWIn = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,11 +41,22 @@ public class GameViewController extends Activity {
         setContentView(R.layout.game_view);
         back = (Button)findViewById(R.id.back);
         winCoins = (Button)findViewById(R.id.winNow);
+        webView = (WebView)findViewById(R.id.webView);
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-
         winCoins.setEnabled(false);
         loadRewardedAds();
+
+        webView.setWebViewClient(new WebViewClient());
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        String path = getIntent().getStringExtra("fileUrl");
+        File folder = new File(path);
+
+        if (folder.exists()) {
+            String fpath = folder.getPath();
+            webView.loadUrl("file://" + path);
+        }
         // Initialize the Mobile Ads SDK
 //        MobileAds.initialize(this, getString(R.string.admob_app_id));
 
@@ -134,8 +149,7 @@ public class GameViewController extends Activity {
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
-                Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
-                startActivity(intent);
+                finish();
             }
 
 
@@ -147,8 +161,7 @@ public class GameViewController extends Activity {
         if (interstitial.isLoaded()) {
             interstitial.show();
         }else{
-            Intent i = new Intent(getApplicationContext(),LauncherActivity.class);
-            startActivity(i);
+            finish();
         }
     }
 

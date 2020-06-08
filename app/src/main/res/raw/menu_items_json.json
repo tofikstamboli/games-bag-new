@@ -1,25 +1,31 @@
 [{
-  "name": "2048",
-  "url": "https://github.com/gabrielecirulli/2048/archive/master.zip",
-  "photo": "logo"
-}, {
   "name": "TowerGame",
   "url": "https://github.com/iamkun/tower_game/archive/master.zip",
-  "photo": "logo"
+  "photo": "logo",
+  "file_name": "/tower_game.zip",
+  "folder_name": "/tower_game-master"
+},{
+  "name": "2048",
+  "url": "https://github.com/gabrielecirulli/2048/archive/master.zip",
+  "photo": "logo",
+  "file_name": "/2048.zip",
+  "folder_name": "/2048-master"
 }, {
-  "name": "Fried Rice",
-  "url": "urlofgame",
-  "photo": "logo"
+  "name": "Tap To Fruits",
+  "url": "https://github.com/AchillesKarki/fruits-slice-game/archive/master.zip",
+  "photo": "logo",
+  "file_name": "/fruits-slice-game.zip",
+  "folder_name": "/fruits-slice-game-master"
 }, {
-  "name": "Beet Fries",
-  "url": "urlofgame",
-  "photo": "logo"
+  "name": "breaklock",
+  "url": "https://github.com/maxwellito/breaklock/archive/master.zip",
+  "photo": "logo",
+  "file_name": "/breaklock.zip",
+  "folder_name": "/breaklock-master"
 }, {
-  "name": "Sautéed Spaghetti",
-  "url": "urlofgame",
-  "photo": "logo"
-}, {
-  "name": "Grape Toast",
-  "url": "urlofgame",
-  "photo": "logo"
+  "name": "taptaptap",
+  "url": "https://github.com/MahdiF/taptaptap/archive/master.zip",
+  "photo": "logo",
+  "file_name": "/taptaptap.zip",
+  "folder_name": "/taptaptap-master/play"
 }]

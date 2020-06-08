@@ -53,6 +53,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private TextView menuItemName;
         ClickListen clickListen;
         private String url;
+        private String file_name;
+        private String folder_name;
         private ImageView menuItemImage;
 
         MenuItemViewHolder(View view,ClickListen clickListen) {
@@ -65,7 +67,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            clickListen.noticeClick(getAdapterPosition(),url);
+            clickListen.noticeClick(getAdapterPosition(),url,folder_name,file_name);
         }
     }
 
@@ -107,7 +109,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
     public interface ClickListen{
-         void noticeClick(int pos,String url);
+         void noticeClick(int pos,String url,String folder_name, String file_name);
     }
     /**
      * Replaces the content in the views that make up the menu item view and the
@@ -136,6 +138,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 menuItemHolder.menuItemImage.setImageResource(imageResID);
                 menuItemHolder.menuItemName.setText(menuItem.getName());
                 menuItemHolder.url = menuItem.getUrl();
+                menuItemHolder.file_name = menuItem.getFile_name();
+                menuItemHolder.folder_name = menuItem.getFolderName();
 //                menuItemHolder.menuItemCategory.setText(menuItem.getCategory());
 //                menuItemHolder.menuItemDescription.setText(menuItem.getDescription());
         }

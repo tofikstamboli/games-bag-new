@@ -145,8 +145,9 @@ public class MainActivity extends AppCompatActivity {
 //                String menuItemPrice = menuItemObject.getString("price");
 //                String menuItemCategory = menuItemObject.getString("category");
                 String menuItemImageName = menuItemObject.getString("photo");
-
-                MenuItem menuItem = new MenuItem(menuItemName, menuUrl, menuItemImageName);
+                String menFileName = menuItemObject.getString("file_name");
+                String menuFolderName = menuItemObject.getString("folder_name");
+                MenuItem menuItem = new MenuItem(menuItemName, menuUrl,menFileName,menuFolderName,menuItemImageName);
                 mRecyclerViewItems.add(menuItem);
             }
         } catch (IOException | JSONException exception) {
