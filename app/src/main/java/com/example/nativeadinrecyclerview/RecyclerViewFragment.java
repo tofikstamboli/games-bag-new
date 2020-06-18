@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +26,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -88,7 +86,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
 
         if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,STORAGE_PERMISSION_CODE)){
             if(isOnline()) {
-                Toast.makeText(this.getContext(), "Clicked at " + url, Toast.LENGTH_LONG).show();
+//                Toast.makeText(this.getContext(), "Clicked at " + url, Toast.LENGTH_LONG).show();
                 this.serverFilePath = url;
                 this.filename = file_name;
                 this.folder_name = folder_name;
@@ -170,9 +168,9 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
             startActivity(intent);
         }else{
             Toast.makeText(getContext(),"Something Went Wrong !!!",Toast.LENGTH_LONG).show();
-            file.delete();
-            File f = new File(localPath + filename);
-            f.delete();
+//            file.delete();
+//            File f = new File(localPath + filename);
+//            f.delete();
             StartOperation();
         }
     }
@@ -281,10 +279,7 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
             return false;
         }
         else {
-            Toast.makeText(getContext(),
-                    "Permission already granted",
-                    Toast.LENGTH_SHORT)
-                    .show();
+//            Toast.makeText(getContext(),"Permission already granted",Toast.LENGTH_SHORT).show();
 
         }
         return true;
@@ -306,16 +301,16 @@ public class RecyclerViewFragment extends Fragment implements RecyclerViewAdapte
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(),
-                        "Storage Permission Granted",
-                        Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(getContext(),
+//                        "Storage Permission Granted",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
             }
             else {
-                Toast.makeText(getContext(),
-                        "Storage Permission Denied",
-                        Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(getContext(),
+//                        "Storage Permission Denied",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
             }
         }
     }

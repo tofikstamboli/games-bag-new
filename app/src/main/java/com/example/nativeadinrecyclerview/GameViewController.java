@@ -1,6 +1,8 @@
 package com.example.nativeadinrecyclerview;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -21,9 +22,7 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-
 import java.io.File;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -34,7 +33,10 @@ public class GameViewController extends Activity {
     private InterstitialAd interstitial;
     private RewardedAd rewardedVideoAd;
     private WebView webView;
+    String MyPrefrences = "MyPrefrences";
     private Integer coinWIn = 0;
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,11 @@ public class GameViewController extends Activity {
         winCoins = (Button)findViewById(R.id.winNow);
         webView = (WebView)findViewById(R.id.webView);
         mAdView = findViewById(R.id.adView);
+        sharedpreferences = getSharedPreferences(MyPrefrences, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
         AdRequest adRequest = new AdRequest.Builder().build();
         winCoins.setEnabled(false);
+
         loadRewardedAds();
 
         webView.setWebViewClient(new WebViewClient());
@@ -66,6 +71,7 @@ public class GameViewController extends Activity {
 
             }
         });
+
 
         AdRequest adIRequest = new AdRequest.Builder().build();
 
@@ -99,34 +105,30 @@ public class GameViewController extends Activity {
         mAdView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                Toast.makeText(getApplicationContext(),"onAdLoaded",Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-                Toast.makeText(getApplicationContext(),"onAdFailedToLoad",Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-                Toast.makeText(getApplicationContext(),"onAdOpened",Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onAdLeftApplication() {
                 // Code to be executed when the user has left the app.
-                Toast.makeText(getApplicationContext(),"onAdLeftApplication",Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onAdClosed() {
                 // Code to be executed when when the user is about to return
                 // to the app after tapping on an ad.
-                Toast.makeText(getApplicationContext(),"onAdClosed",Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -155,6 +157,13 @@ public class GameViewController extends Activity {
 
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        displayInterstitial();
+    }
+
     public void displayInterstitial()
     {
         // If Interstitial Ads are loaded then show else show nothing.
@@ -189,8 +198,11 @@ public class GameViewController extends Activity {
             RewardedAdCallback rewardedAdCallback = new RewardedAdCallback() {
                 @Override
                 public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    coinWIn = coinWIn + 5;
-                    Toast.makeText(getApplicationContext(),"Congrats You have "+coinWIn+" now !",Toast.LENGTH_LONG).show();
+                    coinWIn = coinWIn + 50;
+                    int coin = sharedpreferences.getInt("coinsNow",0);
+                    editor.putInt("coinsNow", coin+coinWIn);
+                    editor.commit();
+                    Toast.makeText(getApplicationContext(),"Congrats You have "+sharedpreferences.getInt("coinsNow",0)+" now !",Toast.LENGTH_LONG).show();
 
                 }
 
@@ -212,7 +224,7 @@ public class GameViewController extends Activity {
                 public void onRewardedAdFailedToShow(int i) {
                     super.onRewardedAdFailedToShow(i);
                     Log.d("ReawrdedAd","Rewarded Ad fail to show");
-                    Toast.makeText(getApplicationContext(),"Fail to show",Toast.LENGTH_LONG).show();
+
                     loadRewardedAds();
                 }
             };

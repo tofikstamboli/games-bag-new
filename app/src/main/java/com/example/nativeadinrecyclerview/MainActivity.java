@@ -1,27 +1,28 @@
 package com.example.nativeadinrecyclerview;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity {
 
     // The number of native ads to load.
-    public static final int NUMBER_OF_ADS = 3;
+    public static final int NUMBER_OF_ADS = 4;
 
     // The AdLoader used to load ads.
     private AdLoader adLoader;
@@ -41,14 +42,32 @@ public class MainActivity extends AppCompatActivity {
     // List of native ads that have been successfully loaded.
     private List<UnifiedNativeAd> mNativeAds = new ArrayList<>();
 
+    SharedPreferences sharedpreferences;
+    String MyPrefrences = "MyPrefrences";
+    TextView coins;
+    Button contribution;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         setContentView(R.layout.activity_main);
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
+        sharedpreferences = getSharedPreferences(MyPrefrences, Context.MODE_PRIVATE);
+        contribution = (Button)findViewById(R.id.contributions);
+        coins = (TextView)findViewById(R.id.coinId);
 
+        loadCoins();
+        contribution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Contributions.class);
+                startActivity(intent);
+            }
+        });
         if (savedInstanceState == null) {
             // Create new fragment to display a progress spinner while the data set for the
             // RecyclerView is populated.
@@ -66,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCoins();
+    }
+
+    void loadCoins(){
+        int a = sharedpreferences.getInt("coinsNow", 0);
+        coins.setText(String.valueOf(a));
+    }
     public List<Object> getRecyclerViewItems() {
         return mRecyclerViewItems;
     }
@@ -108,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
                                 + " load another.");
                         if (!adLoader.isLoading()) {
                             insertAdsInMenuItems();
+                           }
                         }
-                    }
                 }).build();
 
         // Load the Native ads.
@@ -121,8 +150,6 @@ public class MainActivity extends AppCompatActivity {
         Fragment newFragment = new RecyclerViewFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack(null);
 
@@ -142,12 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
                 String menuItemName = menuItemObject.getString("name");
                 String menuUrl = menuItemObject.getString("url");
-//                String menuItemPrice = menuItemObject.getString("price");
+                String menuItemDiscription = menuItemObject.getString("discription");
 //                String menuItemCategory = menuItemObject.getString("category");
                 String menuItemImageName = menuItemObject.getString("photo");
                 String menFileName = menuItemObject.getString("file_name");
                 String menuFolderName = menuItemObject.getString("folder_name");
-                MenuItem menuItem = new MenuItem(menuItemName, menuUrl,menFileName,menuFolderName,menuItemImageName);
+                MenuItem menuItem = new MenuItem(menuItemName,menuItemDiscription, menuUrl,menFileName,menuFolderName,menuItemImageName);
                 mRecyclerViewItems.add(menuItem);
             }
         } catch (IOException | JSONException exception) {
@@ -155,12 +182,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Reads the JSON file and converts the JSON data to a {@link String}.
-     *
-     * @return A {@link String} representation of the JSON data.
-     * @throws IOException if unable to read the JSON file.
-     */
+
     private String readJsonDataFromFile() throws IOException {
 
         InputStream inputStream = null;
@@ -193,7 +215,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("Exit me", true);
+                        startActivity(intent);
                         finish();
+
+
                     }
 
                 })

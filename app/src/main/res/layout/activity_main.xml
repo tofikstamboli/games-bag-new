@@ -8,7 +8,7 @@
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:padding="2dp"
         android:background="@color/ColorLike"
         android:orientation="horizontal">
@@ -39,7 +39,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1000"
+                android:id="@+id/coinId"
+                android:text="0"
                 android:textColor="#fff200"
                 android:fontFamily="sans-serif-smallcaps"
                 android:textSize="25dp"
@@ -52,10 +53,31 @@
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context="com.example.nativeadinrecyclerview.MainActivity">
-
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Try to Win more coins , It will help you to unlock some exiting games in next version!"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="right"
+            android:padding="2dp"
+            android:layout_margin="5dp"
+            android:background="@color/ColorLike"
+            android:textColor="@color/cardview_light_background"
+            android:text="Contribution"
+            android:id="@+id/contributions" />
+        </LinearLayout>
+
 
 </LinearLayout>

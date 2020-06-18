@@ -11,15 +11,19 @@
         <Button
             android:id="@+id/back"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimary"
             android:text="Back"
             />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:id="@+id/winNow"
-            android:text=" Win 100 Coins Now"
+            android:layout_margin="5dp"
+            android:text=" Win +50 Coins Now"
+            android:background="#f9dd09"
             />
 
     </LinearLayout>
@@ -32,7 +36,7 @@
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:background="@color/ColorLike"
-            android:layout_height="620dp">
+            android:layout_height="610dp">
         </WebView>
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"

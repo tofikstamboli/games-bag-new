@@ -50,17 +50,19 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * Provides a reference to each view in the menu item view.
      */
     public class MenuItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView menuItemName;
+        private TextView menuItemName,menudiscription;
         ClickListen clickListen;
         private String url;
         private String file_name;
         private String folder_name;
         private ImageView menuItemImage;
 
+
         MenuItemViewHolder(View view,ClickListen clickListen) {
             super(view);
             menuItemImage = (ImageView) view.findViewById(R.id.menu_item_image);
             menuItemName = (TextView) view.findViewById(R.id.menu_item_name);
+            menudiscription = (TextView) view.findViewById(R.id.discription);
             this.clickListen = clickListen;
             view.setOnClickListener(this);
         }
@@ -140,6 +142,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 menuItemHolder.url = menuItem.getUrl();
                 menuItemHolder.file_name = menuItem.getFile_name();
                 menuItemHolder.folder_name = menuItem.getFolderName();
+                menuItemHolder.menudiscription.setText(menuItem.getDiscription());
 //                menuItemHolder.menuItemCategory.setText(menuItem.getCategory());
 //                menuItemHolder.menuItemDescription.setText(menuItem.getDescription());
         }

@@ -1,31 +1,98 @@
 [{
-  "name": "TowerGame",
-  "url": "https://github.com/iamkun/tower_game/archive/master.zip",
-  "photo": "logo",
-  "file_name": "/tower_game.zip",
-  "folder_name": "/tower_game-master"
-},{
   "name": "2048",
+  "discription": "Merge Similar number and try to make 2048 score !",
   "url": "https://github.com/gabrielecirulli/2048/archive/master.zip",
-  "photo": "logo",
+  "photo": "game_2048",
   "file_name": "/2048.zip",
   "folder_name": "/2048-master"
+},{
+  "name": "Build Tower",
+  "discription": "Build your tower as long as possible !",
+  "url": "https://github.com/iamkun/tower_game/archive/master.zip",
+  "photo": "towergame",
+  "file_name": "/tower_game.zip",
+  "folder_name": "/tower_game-master"
 }, {
-  "name": "Tap To Fruits",
-  "url": "https://github.com/AchillesKarki/fruits-slice-game/archive/master.zip",
-  "photo": "logo",
-  "file_name": "/fruits-slice-game.zip",
-  "folder_name": "/fruits-slice-game-master"
+  "name": "TapTapTap",
+  "discription": "Tap to only blue ball as fast as possible and complete leveles !",
+  "url": "https://github.com/MahdiF/taptaptap/archive/master.zip",
+  "photo": "taptaptap",
+  "file_name": "/taptaptap.zip",
+  "folder_name": "/taptaptap-master/play"
+},{
+  "name": "Piano Tiles",
+  "discription": "Tap to black colored tiles only and bit the speed !",
+  "url": "https://github.com/AJLoveChina/Piano-Tiles/archive/master.zip",
+  "photo": "pianotiles",
+  "file_name": "/Piano-Tiles.zip",
+  "folder_name": "/Piano-Tiles-master"
 }, {
-  "name": "breaklock",
+  "name": "Snake Game",
+  "discription": "Eat the squres and make snake bigger , long press on screen for speedup !",
+  "url": "https://github.com/PKief/Snake/archive/master.zip",
+  "photo": "snake",
+  "file_name": "/Snake.zip",
+  "folder_name": "/Snake-master"
+}, {
+  "name": "Break The Lock",
+  "discription": "Be detective try to break the lock !",
   "url": "https://github.com/maxwellito/breaklock/archive/master.zip",
-  "photo": "logo",
+  "photo": "breaklock",
   "file_name": "/breaklock.zip",
   "folder_name": "/breaklock-master"
 }, {
-  "name": "taptaptap",
-  "url": "https://github.com/MahdiF/taptaptap/archive/master.zip",
-  "photo": "logo",
-  "file_name": "/taptaptap.zip",
-  "folder_name": "/taptaptap-master/play"
-}]
+  "name": "Tik Tak Toe - SinglePlayer",
+  "discription": "Win more by playing with bot !",
+  "url": "https://github.com/domarp-j/tic-tac-toe/archive/master.zip",
+  "photo": "tiktaktoe",
+  "file_name": "/tic-tac-toe.zip",
+  "folder_name": "/tic-tac-toe-master"
+},
+  {
+  "name": "Dyno Jumb",
+  "discription": "Tap at middel of screen and dorch trees",
+  "url": "https://github.com/wayou/t-rex-runner/archive/master.zip",
+  "photo": "dynojump",
+  "file_name": "/t-rex-runner.zip",
+  "folder_name": "/t-rex-runner-master"
+},
+  {
+    "name": "Numbers Game",
+    "discription": "Remember and enter the number , check how long you can remeber ! ",
+    "url": "https://github.com/keithkiarie/numbersgame/archive/master.zip",
+    "photo": "numbersgame",
+    "file_name": "/numbersgame.zip",
+    "folder_name": "/numbersgame-master"
+  },
+  {
+    "name": "Tic Tac Toe - Multiplyer",
+    "discription": "Play with your friend and try to win !",
+    "url": "https://github.com/crhenr/TicTacToeJS/archive/master.zip",
+    "photo": "tiktaktoe2",
+    "file_name": "/TicTacToeJS.zip",
+    "folder_name": "/TicTacToeJS-master"
+  },
+  {
+    "name": "Llinkup",
+    "discription": "Link with similar Object within time !",
+    "url": "https://github.com/gd4Ark/linkup/archive/master.zip",
+    "photo": "llinkup",
+    "file_name": "/linkup.zip",
+    "folder_name": "/linkup-master"
+  },
+  {
+    "name": "Jebleb",
+    "discription": "Tap to square only , square will increase as long as you go !",
+    "url": "https://github.com/ctrl-team/jebleb/archive/master.zip",
+    "photo": "jebleb",
+    "file_name": "/jebleb.zip",
+    "folder_name": "/jebleb-master"
+  },{
+  "name": "Tap To Fruits",
+  "discription": "Tap to fruits , try to make more score !",
+  "url": "https://github.com/AchillesKarki/fruits-slice-game/archive/master.zip",
+  "photo": "fruittap",
+  "file_name": "/fruits-slice-game.zip",
+  "folder_name": "/fruits-slice-game-master"
+}
+]
